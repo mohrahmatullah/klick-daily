@@ -48,7 +48,6 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        $req = $request->all();
         foreach ($request->all() as $key) {
             $stock = Stock::leftjoin('locations','locations.id','stocks.location_id')->select('stocks.id', 'locations.location_name','stocks.stock_quantity','stocks.product')->where('stocks.location_id', $key['location_id'])->first();
             $barang = array(
@@ -67,7 +66,7 @@ class StockController extends Controller
                 );
                 $result[] = $failed;
             }else{
-                Stock::where('location_id', $key['location_id'])->update($barang);
+                $adjusted[] = Stock::where('location_id', $key['location_id'])->update($barang);
                 $succes = array(
                     'status' => 'Success',
                     'updated_at' => date("y-m-d H:i:s", strtotime('now')),
@@ -94,7 +93,9 @@ class StockController extends Controller
             
         }
         return response([
-            'message' => 'Success!',
+            'status_code' => 200,
+            'requests' => sizeof($request->all()),
+            'adjusted' => sizeof($adjusted),
             'results' => $result
         ], 200);
 
@@ -125,6 +126,7 @@ class StockController extends Controller
         //     'results' => $data
         // ], 200);
 
+        // $req = $request->all();
         // $rules =  ['location_id'  => 'required' , 'product' => 'required', 'adjustment' => 'required'];
         // $atributname = [
         //   'location_id.required' => 'The location id field is required.',
