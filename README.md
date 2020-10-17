@@ -17,11 +17,17 @@ How To Install this Project
 - Setting koneksi database di file .env (DB_DATABASE, DB_USERNAME, DB_PASSWORD).
 
 	DB_CONNECTION=mysql
+
 	DB_HOST=localhost
+
 	DB_PORT=3306
+
 	DB_DATABASE=klikdaily
+
 	DB_USERNAME=root
+
 	DB_PASSWORD=
+	
 
 - Run migrations (tables and Seeders) php artisan migrate --seed. Cek di phpmyadmin, seharusnya tabel dan isi nya sudah muncul.
 - Setelah selesai, Jalankan perintah php artisan serve maka dapat diakses dengan http://localhost:8000/
@@ -38,7 +44,7 @@ untuk adjust stock
 Content-Type = application/json
 - Body
 	Berikan Uji coba Test berikut : 
-	
+
 		[
 			{
 			"location_id": 1,
