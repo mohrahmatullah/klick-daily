@@ -77,14 +77,21 @@ class StockController extends Controller
                 //     $stock[] = array('product'  =>  'kopi', 'adjustment' => 96, 'stock_quantity' => 230, 'location_id' => $location_id);
                 //     // $data = Stock::insert($product);
                 //     // $data = Stock::where('location_id', $location_id)->update(array('product' =>  'kopi', 'adjustment' => $adjustment, 'stock_quantity' => 230));
-                // }    
+                // }   
+            // $st = Stock::firstWhere('location_id', $request->location_id); 
+            // $data = new Stock;
+            // $data->product = $request->product;
+            // $data->adjustment = $request->adjustment;
+            // $data->stock_quantity = $request->adjustment;
+            // $data->location_id = $request->location_id;
+            // $data->save();
 
             
-
-            return response([
-                'message' => 'Success!',
-                'results' => $req
-            ], 200);
+            return response()->json($req);
+            // return response([
+            //     'message' => 'Success!',
+            //     'results' => $data
+            // ], 200);
             
         }
 
