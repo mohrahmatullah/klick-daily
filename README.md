@@ -64,6 +64,7 @@ Silahkan Ujicoba test dengan aplikasi POSTMAN, berikut link:
 			]
 
 3. GET LOGS = http://127.0.0.1:8000/api/klikdaily/logs/{location_id}
+	Example: http://127.0.0.1:8000/api/klikdaily/logs/1
 
 
 
