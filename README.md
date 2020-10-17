@@ -33,7 +33,7 @@ How To Install this Project
 - Setelah selesai, Jalankan perintah php artisan serve maka dapat diakses dengan http://127.0.0.1:8000/
  
 
-Silahkan Ujicoba test dengan POSTMAN, berikut link:
+Silahkan Ujicoba test dengan aplikasi POSTMAN, berikut link:
 
 1. GET STOCK = http://127.0.0.1:8000/klikdaily/stocks
 
