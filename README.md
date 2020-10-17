@@ -30,3 +30,5 @@ Get Stock = http://localhost:8000/klikdaily/stocks
 
 ADJUST STOCK = http://localhost:8000/klikdaily/adjustment
 
+GET LOGS = http://localhost:8000/klikdaily/logs/{location_id}
+
