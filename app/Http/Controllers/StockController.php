@@ -194,7 +194,9 @@ class StockController extends Controller
         $stocks = Stock::leftjoin('locations','locations.id','stocks.location_id')->select('stocks.id', 'locations.location_name','stocks.stock_quantity','stocks.product')->where('stocks.location_id', $location_id)->first();
         $logs = Log::leftjoin('stocks','stocks.id','id_product')
         ->where('stocks.location_id', $location_id)
-        ->select('stocks.id', 'logs.type','logs.created_at','stocks.adjustment','stocks.stock_quantity as quantity')->get();
+        ->select('logs.id', 'logs.type','logs.created_at','stocks.adjustment','stocks.stock_quantity as quantity')
+        ->orderBy('logs.id', 'DESC')
+        ->get();
         if(count($logs) > 0){
             return response([
                 'status_code' => 200,
@@ -202,7 +204,7 @@ class StockController extends Controller
                 'location_id' => $location_id,
                 'location_name' => $stocks->location_name,
                 'product' => $stocks->product,
-                'current_qty' => '',
+                'current_qty' => $stocks->stock_quantity,
                 'logs' => $logs,
             ], 200);
 
