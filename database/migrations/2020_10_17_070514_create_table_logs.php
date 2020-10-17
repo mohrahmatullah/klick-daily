@@ -17,6 +17,8 @@ class CreateTableLogs extends Migration
             $table->increments('id');
             $table->integer('id_product');
             $table->string('type');
+            $table->string('adjustment');
+            $table->string('quantity');
             $table->timestamps();
         });
     }

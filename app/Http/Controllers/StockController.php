@@ -84,11 +84,15 @@ class StockController extends Controller
                     $logs = New Log;
                     $logs->id_product = $stock->id;
                     $logs->type = 'Inbound';
+                    $logs->adjustment = $key['adjustment'];
+                    $logs->quantity = $stock->stock_quantity + $key['adjustment'];
                     $logs->save();                
                 }else{
                     $logs = New Log;
                     $logs->id_product = $stock->id;
                     $logs->type = 'Outbound';
+                    $logs->adjustment = $key['adjustment'];
+                    $logs->quantity = $stock->stock_quantity + $key['adjustment'];
                     $logs->save();
                 }
                 
@@ -201,7 +205,7 @@ class StockController extends Controller
         
         $logs = Log::leftjoin('stocks','stocks.id','id_product')
         ->where('stocks.location_id', $location_id)
-        ->select('logs.id', 'logs.type','logs.created_at','stocks.adjustment','stocks.stock_quantity as quantity')
+        ->select('logs.id', 'logs.type','logs.created_at','logs.adjustment','logs.quantity')
         ->orderBy('logs.id', 'DESC')
         ->get();
         
