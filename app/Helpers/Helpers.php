@@ -1,12 +1,12 @@
 <?php
 use Illuminate\Http\Response;;
 
-function sendResponse( $status_code, $message , $result )
+function sendResponse( $arr, $status_code, $message , $result )
 {
     $response = [
         'status_code' => $status_code,
         'status_message' => $message,
-        'stocks'    => $result,
+        $arr    => $result,
     ];
 
     return response()->json($response);

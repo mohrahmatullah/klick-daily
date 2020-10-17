@@ -21,7 +21,7 @@ class StockController extends Controller
         $stocks = Stock::leftjoin('locations','locations.id','stocks.location_id')->select('stocks.id', 'locations.location_name','stocks.stock_quantity','stocks.product')->get();
 
         if(count($stocks) > 0){
-            return sendResponse(200, 'Success', $stocks->toArray());
+            return sendResponse('stocks', 200, 'Success', $stocks->toArray());
         }
         else{
             $res['status_code'] = 404;
@@ -123,7 +123,7 @@ class StockController extends Controller
         ->where('stocks.location_id', $location_id)
         ->select('stocks.id', 'logs.type','logs.created_at','stocks.adjustment','stocks.stock_quantity as quantity')->get();
         if(count($logs) > 0){
-            return sendResponse(200, 'Success', $logs->toArray());
+            return sendResponse('logs', 200, 'Success', $logs->toArray());
         }
         else{
             $res['status_code'] = 404;
