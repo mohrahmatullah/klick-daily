@@ -27,38 +27,38 @@ How To Install this Project
 	DB_USERNAME=root
 
 	DB_PASSWORD=
-	
+
 
 - Run migrations (tables and Seeders) php artisan migrate --seed. Cek di phpmyadmin, seharusnya tabel dan isi nya sudah muncul.
-- Setelah selesai, Jalankan perintah php artisan serve maka dapat diakses dengan http://localhost:8000/
+- Setelah selesai, Jalankan perintah php artisan serve maka dapat diakses dengan http://127.0.0.1:8000/
  
 
-Silahkan Ujicoba test dengan link berikut:
+Silahkan Ujicoba test dengan POSTMAN, berikut link:
 
-Get Stock = http://127.0.0.1:8000/klikdaily/stocks
+1. GET STOCK = http://127.0.0.1:8000/klikdaily/stocks
 
-ADJUST STOCK = http://127.0.0.1:8000/klikdaily/adjustment
+2. ADJUST STOCK = http://127.0.0.1:8000/klikdaily/adjustment
 
-untuk adjust stock
-- headers 
-Content-Type = application/json
-- Body
-	Berikan Uji coba Test berikut : 
+	untuk adjust stock
+	- headers 
+	Content-Type = application/json
+	- Body
+		Berikan Uji coba Test berikut : 
 
-		[
-			{
-			"location_id": 1,
-			"product": "Indomie Goreng",
-			"adjustment": -10
-			},
-			{
-			"location_id": 2,
-			"product": "Kopi",
-			"adjustment": 6
-			}
-		]
+			[
+				{
+				"location_id": 1,
+				"product": "Indomie Goreng",
+				"adjustment": -10
+				},
+				{
+				"location_id": 2,
+				"product": "Kopi",
+				"adjustment": 6
+				}
+			]
 
-GET LOGS = http://127.0.0.1:8000/klikdaily/logs/{location_id}
+3. GET LOGS = http://127.0.0.1:8000/klikdaily/logs/{location_id}
 
 
 
