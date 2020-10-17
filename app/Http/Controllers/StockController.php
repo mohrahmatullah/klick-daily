@@ -191,13 +191,26 @@ class StockController extends Controller
      */
     public function show($location_id)
     {
-        $stocks = Stock::leftjoin('locations','locations.id','stocks.location_id')->select('stocks.id', 'locations.location_name','stocks.stock_quantity','stocks.product')->where('stocks.location_id', $location_id)->first();
+        
         $logs = Log::leftjoin('stocks','stocks.id','id_product')
         ->where('stocks.location_id', $location_id)
         ->select('logs.id', 'logs.type','logs.created_at','stocks.adjustment','stocks.stock_quantity as quantity')
         ->orderBy('logs.id', 'DESC')
         ->get();
+        
         if(count($logs) > 0){
+            $stocks = Stock::leftjoin('locations','locations.id','stocks.location_id')->select('stocks.id', 'locations.location_name','stocks.stock_quantity','stocks.product')->where('stocks.location_id', $location_id)->first();
+            
+            $log_data= array();
+            foreach ($logs as $key) {
+                $data['id'] = $key->id;
+                $data['type'] = $key->type;
+                $data['created_at'] = date('Y-m-d H:i:s', strtotime($key->created_at));
+                $data['adjustment'] = $key->adjustment;
+                $data['quantity'] = $key->quantity;
+                array_push($log_data, $data);
+            }
+
             return response([
                 'status_code' => 200,
                 'status' => 'Success, logs found',
@@ -205,7 +218,7 @@ class StockController extends Controller
                 'location_name' => $stocks->location_name,
                 'product' => $stocks->product,
                 'current_qty' => $stocks->stock_quantity,
-                'logs' => $logs,
+                'logs' => $log_data,
             ], 200);
 
             // return sendResponse('logs', 200, 'Success', $logs->toArray());
