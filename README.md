@@ -6,7 +6,7 @@ How To Install this Project
 - Memiliki koneksi internet (untuk proses installasi).
 
 2. Langkah-Langkah
-- git clone Melalui terminal,
+- git clone https://github.com/mohrahmatullah/klick-daily.git Melalui terminal,
 - cd ke direktori klik-daily.
 - (Sesuai petunjuk installasi) Pada terminal, berikan perintah composer install. Ini yang perlu koneksi internet.
 - Composer akan menginstall dependency paket dari source code tersebut hingga selesai.
@@ -15,12 +15,14 @@ How To Install this Project
 - Duplikat file .env.example, lalu rename menjadi .env.
 - Kembali ke terminal, php artisan key:generate.
 - Setting koneksi database di file .env (DB_DATABASE, DB_USERNAME, DB_PASSWORD).
+
 	DB_CONNECTION=mysql
 	DB_HOST=localhost
 	DB_PORT=3306
 	DB_DATABASE=klikdaily
 	DB_USERNAME=root
 	DB_PASSWORD=
+	
 - Run migrations (tables and Seeders) php artisan migrate --seed. Cek di phpmyadmin, seharusnya tabel dan isi nya sudah muncul.
 - Setelah selesai, Jalankan perintah php artisan serve maka dapat diakses dengan http://localhost:8000/
  
