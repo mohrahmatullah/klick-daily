@@ -35,9 +35,9 @@ How To Install this Project
 
 Silahkan Ujicoba test dengan aplikasi POSTMAN, berikut link:
 
-1. GET STOCK = http://127.0.0.1:8000/klikdaily/stocks
+1. GET STOCK = http://127.0.0.1:8000/api/klikdaily/stocks
 
-2. ADJUST STOCK = http://127.0.0.1:8000/klikdaily/adjustment
+2. ADJUST STOCK = http://127.0.0.1:8000/api/klikdaily/adjustment
 
 	untuk adjust stock
 
@@ -63,7 +63,7 @@ Silahkan Ujicoba test dengan aplikasi POSTMAN, berikut link:
 				}
 			]
 
-3. GET LOGS = http://127.0.0.1:8000/klikdaily/logs/{location_id}
+3. GET LOGS = http://127.0.0.1:8000/api/klikdaily/logs/{location_id}
 
 
 
