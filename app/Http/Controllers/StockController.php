@@ -191,11 +191,22 @@ class StockController extends Controller
      */
     public function show($location_id)
     {
+        $stocks = Stock::leftjoin('locations','locations.id','stocks.location_id')->select('stocks.id', 'locations.location_name','stocks.stock_quantity','stocks.product')->where('stocks.location_id', $location_id)->first();
         $logs = Log::leftjoin('stocks','stocks.id','id_product')
         ->where('stocks.location_id', $location_id)
         ->select('stocks.id', 'logs.type','logs.created_at','stocks.adjustment','stocks.stock_quantity as quantity')->get();
         if(count($logs) > 0){
-            return sendResponse('logs', 200, 'Success', $logs->toArray());
+            return response([
+                'status_code' => 200,
+                'status' => 'Success, logs found',
+                'location_id' => $location_id,
+                'location_name' => $stocks->location_name,
+                'product' => $stocks->product,
+                'current_qty' => '',
+                'logs' => $logs,
+            ], 200);
+
+            // return sendResponse('logs', 200, 'Success', $logs->toArray());
         }
         else{
             $res['status_code'] = 404;
