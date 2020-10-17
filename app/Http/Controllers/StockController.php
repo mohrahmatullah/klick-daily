@@ -48,56 +48,63 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        foreach ($request->all() as $key) {
-            $stock = Stock::leftjoin('locations','locations.id','stocks.location_id')->select('stocks.id', 'locations.location_name','stocks.stock_quantity','stocks.product')->where('stocks.location_id', $key['location_id'])->first();
-            $barang = array(
-                'product' => $key['product'],
-                'adjustment' => $key['adjustment'],
-                'stock_quantity' => $stock->stock_quantity + $key['adjustment'],
-                'location_id' => $key['location_id']
-            );
-
-            if($key['product'] != $stock->product){
-                $failed = array(
-                    'status' => 'Failed',
-                    'error_message' => 'Invalid Product',
-                    'updated_at' => date("y-m-d H:i:s", strtotime('now')),
-                    'location_id' => $key['location_id']
-                );
-                $result[] = $failed;
-            }else{
-                $adjusted[] = Stock::where('location_id', $key['location_id'])->update($barang);
-                $succes = array(
-                    'status' => 'Success',
-                    'updated_at' => date("y-m-d H:i:s", strtotime('now')),
-                    'location_id' => $key['location_id'],
-                    'location_name' => $stock->location_name,
+        if(count($request->all()) > 0){
+           foreach ($request->all() as $key) {
+                $stock = Stock::leftjoin('locations','locations.id','stocks.location_id')->select('stocks.id', 'locations.location_name','stocks.stock_quantity','stocks.product')->where('stocks.location_id', $key['location_id'])->first();
+                $barang = array(
                     'product' => $key['product'],
                     'adjustment' => $key['adjustment'],
                     'stock_quantity' => $stock->stock_quantity + $key['adjustment'],
-                    
+                    'location_id' => $key['location_id']
                 );
-                $result[] = $succes;
+
+                if($key['product'] != $stock->product){
+                    $failed = array(
+                        'status' => 'Failed',
+                        'error_message' => 'Invalid Product',
+                        'updated_at' => date("y-m-d H:i:s", strtotime('now')),
+                        'location_id' => $key['location_id']
+                    );
+                    $result[] = $failed;
+                }else{
+                    $adjusted[] = Stock::where('location_id', $key['location_id'])->update($barang);
+                    $succes = array(
+                        'status' => 'Success',
+                        'updated_at' => date("y-m-d H:i:s", strtotime('now')),
+                        'location_id' => $key['location_id'],
+                        'location_name' => $stock->location_name,
+                        'product' => $key['product'],
+                        'adjustment' => $key['adjustment'],
+                        'stock_quantity' => $stock->stock_quantity + $key['adjustment'],
+                        
+                    );
+                    $result[] = $succes;
+                }
+                if( $key['adjustment'] > 0 ){
+                    $logs = New Log;
+                    $logs->id_product = $stock->id;
+                    $logs->type = 'Inbound';
+                    $logs->save();                
+                }else{
+                    $logs = New Log;
+                    $logs->id_product = $stock->id;
+                    $logs->type = 'Outbound';
+                    $logs->save();
+                }
+                
             }
-            if( $key['adjustment'] > 0 ){
-                $logs = New Log;
-                $logs->id_product = $stock->id;
-                $logs->type = 'Inbound';
-                $logs->save();                
-            }else{
-                $logs = New Log;
-                $logs->id_product = $stock->id;
-                $logs->type = 'Outbound';
-                $logs->save();
-            }
-            
+            return response([
+                'status_code' => 200,
+                'requests' => sizeof($request->all()),
+                'adjusted' => sizeof($adjusted),
+                'results' => $result
+            ], 200); 
+        }else{
+            $res['status_code'] = 404;
+            $res['status_message'] = "Not Found";
+            return response($res);
         }
-        return response([
-            'status_code' => 200,
-            'requests' => sizeof($request->all()),
-            'adjusted' => sizeof($adjusted),
-            'results' => $result
-        ], 200);
+        
 
         // foreach ($request->all() as $key) {
         //     $stock = Stock::find($key['location_id']);
@@ -200,7 +207,7 @@ class StockController extends Controller
         
         if(count($logs) > 0){
             $stocks = Stock::leftjoin('locations','locations.id','stocks.location_id')->select('stocks.id', 'locations.location_name','stocks.stock_quantity','stocks.product')->where('stocks.location_id', $location_id)->first();
-            
+
             $log_data= array();
             foreach ($logs as $key) {
                 $data['id'] = $key->id;
