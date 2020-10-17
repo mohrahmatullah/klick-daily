@@ -19,4 +19,5 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('klikdaily/stocks', 'StockController@index')->name('get-stocks');
-Route::POST('/klikdaily/adjustment', 'StockController@store')->name('post-stocks');
+Route::POST('klikdaily/adjustment', 'StockController@store')->name('post-stocks');
+Route::get('klikdaily/logs/{location_id}', 'StockController@show')->name('get-logs');

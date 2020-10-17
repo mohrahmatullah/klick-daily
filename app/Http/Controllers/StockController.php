@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Stock;
 use Response;
 use App\Location;
+use App\Log;
 use Validator;
 
 class StockController extends Controller
@@ -79,19 +80,31 @@ class StockController extends Controller
                 //     // $data = Stock::where('location_id', $location_id)->update(array('product' =>  'kopi', 'adjustment' => $adjustment, 'stock_quantity' => 230));
                 // }   
             // $st = Stock::firstWhere('location_id', $request->location_id); 
-            // $data = new Stock;
-            // $data->product = $request->product;
-            // $data->adjustment = $request->adjustment;
-            // $data->stock_quantity = $request->adjustment;
-            // $data->location_id = $request->location_id;
-            // $data->save();
+            $stock = Stock::find($request->location_id);
+            $stock->product = $request->product;
+            $stock->adjustment = $request->adjustment;
+            $stock->stock_quantity = $stock->stock_quantity + $request->adjustment;
+            $stock->location_id = $request->location_id;
+            $stock->save();
+
+            if( $request->adjustment > 0 ){
+                $logs = New Log;
+                $logs->id_product = $stock->id;
+                $logs->type = 'Inbound';
+                $logs->save();                
+            }else{
+                $logs = New Log;
+                $logs->id_product = $stock->id;
+                $logs->type = 'Outbound';
+                $logs->save();
+            }
+
 
             
-            return response()->json($req);
-            // return response([
-            //     'message' => 'Success!',
-            //     'results' => $data
-            // ], 200);
+            return response([
+                'message' => 'Success!',
+                'results' => $stock
+            ], 200);
             
         }
 
@@ -104,9 +117,19 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($location_id)
     {
-        //
+        $logs = Log::leftjoin('stocks','stocks.id','id_product')
+        ->where('stocks.location_id', $location_id)
+        ->select('stocks.id', 'logs.type','logs.created_at','stocks.adjustment','stocks.stock_quantity as quantity')->get();
+        if(count($logs) > 0){
+            return sendResponse(200, 'Success', $logs->toArray());
+        }
+        else{
+            $res['status_code'] = 404;
+            $res['status_message'] = "Not Found";
+            return response($res);
+        }
     }
 
     /**
