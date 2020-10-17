@@ -22,7 +22,7 @@ How To Install this Project
 	DB_DATABASE=klikdaily
 	DB_USERNAME=root
 	DB_PASSWORD=
-	
+
 - Run migrations (tables and Seeders) php artisan migrate --seed. Cek di phpmyadmin, seharusnya tabel dan isi nya sudah muncul.
 - Setelah selesai, Jalankan perintah php artisan serve maka dapat diakses dengan http://localhost:8000/
  
@@ -37,18 +37,20 @@ untuk adjust stock
 - headers 
 Content-Type = application/json
 - Body
-	Uji coba Test 1.
-		{
-		"location_id": 1,
-		"product": "Indomie Goreng",
-		"adjustment": -10
-		}
-	Uji coba Test 2.
-		{
-		"location_id": 2,
-		"product": "Kopi",
-		"adjustment": 6
-		}
+	Berikan Uji coba Test berikut : 
+	
+		[
+			{
+			"location_id": 1,
+			"product": "Indomie Goreng",
+			"adjustment": -10
+			},
+			{
+			"location_id": 2,
+			"product": "Kopi",
+			"adjustment": 6
+			}
+		]
 
 GET LOGS = http://127.0.0.1:8000/klikdaily/logs/{location_id}
 

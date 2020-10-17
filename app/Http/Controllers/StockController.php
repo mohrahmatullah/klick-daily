@@ -49,74 +49,103 @@ class StockController extends Controller
     public function store(Request $request)
     {
         $req = $request->all();
-        $rules =  ['location_id'  => 'required' , 'product' => 'required', 'adjustment' => 'required'];
-        $atributname = [
-          'location_id.required' => 'The location id field is required.',
-          'product.required' => 'The product field is required.',
-          'adjustment.required' => 'The product field is required.',
-        ];
-     
-        $validator = Validator::make($req, $rules, $atributname);
-        if($validator->fails()){
-          return $validator->errors();
-        }else{
-            // foreach ($request->location_id as $location_id) {
-            //     $data[]['location_id'] = $location_id;
-            // }
-            // foreach ($request->product as $product) {
-            //     $data[]['product'] = $product;
-            // }
-            // foreach ($request->adjustment as $adjustment) {
-            //     $data[]['adjustment'] = $adjustment;
-            // }
-            // $y = array($data[]['location_id'], $data[]['product'], $data[]['adjustment']);
-            // $st = Stock::firstWhere('location_id', $request->location_id);
-            // $stock = array('product'  =>  $request->product , 'adjustment' => $request->adjustment, 'stock_quantity' => $st->stock_quantity + $request->adjustment);        
+        // foreach ($request->all() as $value) {
+        //     $p[] = $value['location_id'];
+        // }
+        // return response([
+        //     'message' => 'Success!',
+        //     'results' => $p
+        // ], 200);
 
-                // foreach ($request->location_id as $location_id) {
-                //     // Stock::where('location_id', $location_id)->delete();
-                //     $stock[] = array('product'  =>  'kopi', 'adjustment' => 96, 'stock_quantity' => 230, 'location_id' => $location_id);
-                //     // $data = Stock::insert($product);
-                //     // $data = Stock::where('location_id', $location_id)->update(array('product' =>  'kopi', 'adjustment' => $adjustment, 'stock_quantity' => 230));
-                // }   
-            // $st = Stock::firstWhere('location_id', $request->location_id); 
-            $stock = Stock::find($request->location_id);
-            if($stock->product != $request->product){
-                return response([
-                    'status' => 'Failed',
-                    'error_message' => 'Invalid Product',
-                    'updated_at' =>  date("y-m-d H:i:s", strtotime('now')),
-                    'location_id' => $request->location_id
-                ], 200);
+        foreach ($request->all() as $key) {
+            $stock = Stock::find($key['location_id']);
+            $stock->product = $key['product'];
+            $stock->adjustment = $key['adjustment'];
+            $stock->stock_quantity = $stock->stock_quantity + $key['adjustment'];
+            $stock->location_id = $key['location_id'];
+            $stock->save();
+
+            if( $key['adjustment'] > 0 ){
+                $logs = New Log;
+                $logs->id_product = $stock->id;
+                $logs->type = 'Inbound';
+                $logs->save();                
             }else{
-                $stock->product = $request->product;
-                $stock->adjustment = $request->adjustment;
-                $stock->stock_quantity = $stock->stock_quantity + $request->adjustment;
-                $stock->location_id = $request->location_id;
-                $stock->save();
+                $logs = New Log;
+                $logs->id_product = $stock->id;
+                $logs->type = 'Outbound';
+                $logs->save();
+            }
+            $data[] = $stock;
+            // if($stock->product != $request['product']){
+            //     return response([
+            //         'status' => 'Failed',
+            //         'error_message' => 'Invalid Product',
+            //         'updated_at' =>  date("y-m-d H:i:s", strtotime('now')),
+            //         'location_id' => $key['location_id']
+            //     ], 200);
+            // }else{
+                
+            // }
+            
+        }
+        return response([
+            'message' => 'Success!',
+            'results' => $data
+        ], 200);
 
-                if( $request->adjustment > 0 ){
-                    $logs = New Log;
-                    $logs->id_product = $stock->id;
-                    $logs->type = 'Inbound';
-                    $logs->save();                
-                }else{
-                    $logs = New Log;
-                    $logs->id_product = $stock->id;
-                    $logs->type = 'Outbound';
-                    $logs->save();
-                }
+        // $rules =  ['location_id'  => 'required' , 'product' => 'required', 'adjustment' => 'required'];
+        // $atributname = [
+        //   'location_id.required' => 'The location id field is required.',
+        //   'product.required' => 'The product field is required.',
+        //   'adjustment.required' => 'The product field is required.',
+        // ];
+     
+        // $validator = Validator::make($req, $rules, $atributname);
+        // if($validator->fails()){
+        //   return $validator->errors();
+        // }else{
+
+            
+            
+
+
+        //     // $stock = Stock::find($request->location_id);
+        //     // if($stock->product != $request->product){
+        //     //     return response([
+        //     //         'status' => 'Failed',
+        //     //         'error_message' => 'Invalid Product',
+        //     //         'updated_at' =>  date("y-m-d H:i:s", strtotime('now')),
+        //     //         'location_id' => $request->location_id
+        //     //     ], 200);
+        //     // }else{
+        //     //     $stock->product = $request->product;
+        //     //     $stock->adjustment = $request->adjustment;
+        //     //     $stock->stock_quantity = $stock->stock_quantity + $request->adjustment;
+        //     //     $stock->location_id = $request->location_id;
+        //     //     $stock->save();
+
+        //     //     if( $request->adjustment > 0 ){
+        //     //         $logs = New Log;
+        //     //         $logs->id_product = $stock->id;
+        //     //         $logs->type = 'Inbound';
+        //     //         $logs->save();                
+        //     //     }else{
+        //     //         $logs = New Log;
+        //     //         $logs->id_product = $stock->id;
+        //     //         $logs->type = 'Outbound';
+        //     //         $logs->save();
+        //     //     }
 
 
                 
-                return response([
-                    'message' => 'Success!',
-                    'results' => $stock
-                ], 200);
-            }
+        //     //     return response([
+        //     //         'message' => 'Success!',
+        //     //         'results' => $stock
+        //     //     ], 200);
+        //     // }            
             
-            
-        }
+        // }
 
         
     }
