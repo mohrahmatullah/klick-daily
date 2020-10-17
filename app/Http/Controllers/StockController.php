@@ -96,7 +96,7 @@ class StockController extends Controller
             return response([
                 'status_code' => 200,
                 'requests' => sizeof($request->all()),
-                'adjusted' => sizeof($adjusted),
+                'adjusted' => (isset($adjusted)) ? sizeof($adjusted) : 'no adjusted',
                 'results' => $result
             ], 200); 
         }else{
