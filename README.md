@@ -1,7 +1,7 @@
 How To Install this Project
 1. Persiapan
 - Memiliki CLI/Command Line Interface berupa Command Prompt (CMD) atau Power Shell atau Git Bash (selanjutnya kita sebut terminal).
-- Memiliki Web Server (misal XAMPP) dengan PHP minimal versi 7.1.3.
+- Memiliki Web Server (misal XAMPP) dengan PHP minimal versi 7.4 Karena project ini menggunakan framework laravel versi 7.0
 - Composer telah ter-install, cek dengan perintah composer -V melalui terminal.
 - Memiliki koneksi internet (untuk proses installasi).
 
@@ -40,7 +40,7 @@ Silahkan Ujicoba test dengan POSTMAN, berikut link:
 2. ADJUST STOCK = http://127.0.0.1:8000/klikdaily/adjustment
 
 	untuk adjust stock
-	
+
 	- headers
 
 	key => Content-Type
