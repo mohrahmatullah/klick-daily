@@ -40,8 +40,13 @@ Silahkan Ujicoba test dengan POSTMAN, berikut link:
 2. ADJUST STOCK = http://127.0.0.1:8000/klikdaily/adjustment
 
 	untuk adjust stock
-	- headers 
-	Content-Type = application/json
+	
+	- headers
+
+	key => Content-Type
+
+	value => application/json
+
 	- Body
 		Berikan Uji coba Test berikut : 
 
