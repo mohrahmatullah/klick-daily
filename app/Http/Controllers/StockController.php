@@ -68,14 +68,18 @@ class StockController extends Controller
                 $result[] = $failed;
             }else{
                 Stock::where('location_id', $key['location_id'])->update($barang);
-                $result[] = $barang;
+                $succes = array(
+                    'status' => 'Success',
+                    'updated_at' => date("y-m-d H:i:s", strtotime('now')),
+                    'location_id' => $key['location_id'],
+                    'location_name' => $stock->location_name,
+                    'product' => $key['product'],
+                    'adjustment' => $key['adjustment'],
+                    'stock_quantity' => $stock->stock_quantity + $key['adjustment'],
+                    
+                );
+                $result[] = $succes;
             }
-            // $stock->product = $key['product'];
-            // $stock->adjustment = $key['adjustment'];
-            // $stock->stock_quantity = $stock->stock_quantity + $key['adjustment'];
-            // $stock->location_id = $key['location_id'];
-            // $stock->save();
-
             if( $key['adjustment'] > 0 ){
                 $logs = New Log;
                 $logs->id_product = $stock->id;
@@ -87,7 +91,6 @@ class StockController extends Controller
                 $logs->type = 'Outbound';
                 $logs->save();
             }
-            // $data[] = $stock;
             
         }
         return response([
