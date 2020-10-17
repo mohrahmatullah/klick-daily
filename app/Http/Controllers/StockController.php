@@ -81,30 +81,40 @@ class StockController extends Controller
                 // }   
             // $st = Stock::firstWhere('location_id', $request->location_id); 
             $stock = Stock::find($request->location_id);
-            $stock->product = $request->product;
-            $stock->adjustment = $request->adjustment;
-            $stock->stock_quantity = $stock->stock_quantity + $request->adjustment;
-            $stock->location_id = $request->location_id;
-            $stock->save();
-
-            if( $request->adjustment > 0 ){
-                $logs = New Log;
-                $logs->id_product = $stock->id;
-                $logs->type = 'Inbound';
-                $logs->save();                
+            if($stock->product != $request->product){
+                return response([
+                    'status' => 'Failed',
+                    'error_message' => 'Invalid Product',
+                    'updated_at' =>  date("y-m-d H:i:s", strtotime('now')),
+                    'location_id' => $request->location_id
+                ], 200);
             }else{
-                $logs = New Log;
-                $logs->id_product = $stock->id;
-                $logs->type = 'Outbound';
-                $logs->save();
+                $stock->product = $request->product;
+                $stock->adjustment = $request->adjustment;
+                $stock->stock_quantity = $stock->stock_quantity + $request->adjustment;
+                $stock->location_id = $request->location_id;
+                $stock->save();
+
+                if( $request->adjustment > 0 ){
+                    $logs = New Log;
+                    $logs->id_product = $stock->id;
+                    $logs->type = 'Inbound';
+                    $logs->save();                
+                }else{
+                    $logs = New Log;
+                    $logs->id_product = $stock->id;
+                    $logs->type = 'Outbound';
+                    $logs->save();
+                }
+
+
+                
+                return response([
+                    'message' => 'Success!',
+                    'results' => $stock
+                ], 200);
             }
-
-
             
-            return response([
-                'message' => 'Success!',
-                'results' => $stock
-            ], 200);
             
         }
 
