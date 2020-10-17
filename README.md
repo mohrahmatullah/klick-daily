@@ -25,10 +25,32 @@ How To Install this Project
 - Setelah selesai, Jalankan perintah php artisan serve maka dapat diakses dengan http://localhost:8000/
  
 
+Silahkan Ujicoba test dengan link berikut:
 
 Get Stock = http://127.0.0.1:8000/klikdaily/stocks
 
 ADJUST STOCK = http://127.0.0.1:8000/klikdaily/adjustment
 
+untuk adjust stock
+- headers 
+Content-Type = application/json
+- Body
+	Uji coba Test 1.
+		{
+		"location_id": 1,
+		"product": "Indomie Goreng",
+		"adjustment": -10
+		}
+	Uji coba Test 2.
+		{
+		"location_id": 2,
+		"product": "Kopi",
+		"adjustment": 6
+		}
+
 GET LOGS = http://127.0.0.1:8000/klikdaily/logs/{location_id}
 
+
+
+
+Terimakasih atas kesempatannya untuk mengikuti test skill pada Klikdaily
