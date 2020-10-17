@@ -79,21 +79,21 @@ class StockController extends Controller
                         
                     );
                     $result[] = $succes;
-                }
-                if( $key['adjustment'] > 0 ){
-                    $logs = New Log;
-                    $logs->id_product = $stock->id;
-                    $logs->type = 'Inbound';
-                    $logs->adjustment = $key['adjustment'];
-                    $logs->quantity = $stock->stock_quantity + $key['adjustment'];
-                    $logs->save();                
-                }else{
-                    $logs = New Log;
-                    $logs->id_product = $stock->id;
-                    $logs->type = 'Outbound';
-                    $logs->adjustment = $key['adjustment'];
-                    $logs->quantity = $stock->stock_quantity + $key['adjustment'];
-                    $logs->save();
+                    if( $key['adjustment'] > 0 ){
+                        $logs = New Log;
+                        $logs->id_product = $stock->id;
+                        $logs->type = 'Inbound';
+                        $logs->adjustment = $key['adjustment'];
+                        $logs->quantity = $stock->stock_quantity + $key['adjustment'];
+                        $logs->save();                
+                    }else{
+                        $logs = New Log;
+                        $logs->id_product = $stock->id;
+                        $logs->type = 'Outbound';
+                        $logs->adjustment = $key['adjustment'];
+                        $logs->quantity = $stock->stock_quantity + $key['adjustment'];
+                        $logs->save();
+                    }
                 }
                 
             }
