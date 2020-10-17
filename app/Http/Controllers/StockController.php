@@ -49,21 +49,32 @@ class StockController extends Controller
     public function store(Request $request)
     {
         $req = $request->all();
-        // foreach ($request->all() as $value) {
-        //     $p[] = $value['location_id'];
-        // }
-        // return response([
-        //     'message' => 'Success!',
-        //     'results' => $p
-        // ], 200);
-
         foreach ($request->all() as $key) {
-            $stock = Stock::find($key['location_id']);
-            $stock->product = $key['product'];
-            $stock->adjustment = $key['adjustment'];
-            $stock->stock_quantity = $stock->stock_quantity + $key['adjustment'];
-            $stock->location_id = $key['location_id'];
-            $stock->save();
+            $stock = Stock::leftjoin('locations','locations.id','stocks.location_id')->select('stocks.id', 'locations.location_name','stocks.stock_quantity','stocks.product')->where('stocks.location_id', $key['location_id'])->first();
+            $barang = array(
+                'product' => $key['product'],
+                'adjustment' => $key['adjustment'],
+                'stock_quantity' => $stock->stock_quantity + $key['adjustment'],
+                'location_id' => $key['location_id']
+            );
+
+            if($key['product'] != $stock->product){
+                $failed = array(
+                    'status' => 'Failed',
+                    'error_message' => 'Invalid Product',
+                    'updated_at' => date("y-m-d H:i:s", strtotime('now')),
+                    'location_id' => $key['location_id']
+                );
+                $result[] = $failed;
+            }else{
+                Stock::where('location_id', $key['location_id'])->update($barang);
+                $result[] = $barang;
+            }
+            // $stock->product = $key['product'];
+            // $stock->adjustment = $key['adjustment'];
+            // $stock->stock_quantity = $stock->stock_quantity + $key['adjustment'];
+            // $stock->location_id = $key['location_id'];
+            // $stock->save();
 
             if( $key['adjustment'] > 0 ){
                 $logs = New Log;
@@ -76,23 +87,40 @@ class StockController extends Controller
                 $logs->type = 'Outbound';
                 $logs->save();
             }
-            $data[] = $stock;
-            // if($stock->product != $request['product']){
-            //     return response([
-            //         'status' => 'Failed',
-            //         'error_message' => 'Invalid Product',
-            //         'updated_at' =>  date("y-m-d H:i:s", strtotime('now')),
-            //         'location_id' => $key['location_id']
-            //     ], 200);
-            // }else{
-                
-            // }
+            // $data[] = $stock;
             
         }
         return response([
             'message' => 'Success!',
-            'results' => $data
+            'results' => $result
         ], 200);
+
+        // foreach ($request->all() as $key) {
+        //     $stock = Stock::find($key['location_id']);
+        //     $stock->product = $key['product'];
+        //     $stock->adjustment = $key['adjustment'];
+        //     $stock->stock_quantity = $stock->stock_quantity + $key['adjustment'];
+        //     $stock->location_id = $key['location_id'];
+        //     $stock->save();
+
+        //     if( $key['adjustment'] > 0 ){
+        //         $logs = New Log;
+        //         $logs->id_product = $stock->id;
+        //         $logs->type = 'Inbound';
+        //         $logs->save();                
+        //     }else{
+        //         $logs = New Log;
+        //         $logs->id_product = $stock->id;
+        //         $logs->type = 'Outbound';
+        //         $logs->save();
+        //     }
+        //     $data[] = $stock;
+            
+        // }
+        // return response([
+        //     'message' => 'Success!',
+        //     'results' => $data
+        // ], 200);
 
         // $rules =  ['location_id'  => 'required' , 'product' => 'required', 'adjustment' => 'required'];
         // $atributname = [
