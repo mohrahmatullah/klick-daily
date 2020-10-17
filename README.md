@@ -26,9 +26,9 @@ How To Install this Project
  
 
 
-Get Stock = http://localhost:8000/klikdaily/stocks
+Get Stock = http://127.0.0.1:8000/klikdaily/stocks
 
-ADJUST STOCK = http://localhost:8000/klikdaily/adjustment
+ADJUST STOCK = http://127.0.0.1:8000/klikdaily/adjustment
 
-GET LOGS = http://localhost:8000/klikdaily/logs/{location_id}
+GET LOGS = http://127.0.0.1:8000/klikdaily/logs/{location_id}
 
