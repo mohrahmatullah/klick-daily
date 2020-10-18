@@ -55,10 +55,10 @@ Silahkan Ujicoba test dengan aplikasi POSTMAN, berikut link:
 	value => application/json
 
 	- Body
-	
+
 	Berikan Uji coba Test berikut : 
 	
-	Ini untuk test multiple array 
+	Ini untuk test multiple request 
 
 			[
 				{
@@ -73,7 +73,7 @@ Silahkan Ujicoba test dengan aplikasi POSTMAN, berikut link:
 				}
 			]
 
-	Ini untuk test satu array
+	Ini untuk test satu request
 
 			[
 				{
