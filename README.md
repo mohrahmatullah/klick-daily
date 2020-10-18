@@ -25,7 +25,7 @@ How To Install this Project
 		DB_DATABASE=klikdaily
 
 		DB_USERNAME=root
-		
+
 		DB_PASSWORD=
 
 	- Run migrations (tables and Seeders) php artisan migrate --seed. Cek di phpmyadmin, seharusnya tabel dan isi nya sudah muncul.
@@ -55,6 +55,7 @@ Silahkan Ujicoba test dengan aplikasi POSTMAN, berikut link:
 	value => application/json
 
 	- Body
+	
 	Berikan Uji coba Test berikut : 
 	
 	Ini untuk test multiple array 
