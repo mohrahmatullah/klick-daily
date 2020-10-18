@@ -7,7 +7,7 @@ How To Install this Project
 
 2. Langkah-Langkah
 - git clone https://github.com/mohrahmatullah/klick-daily.git Melalui terminal,
-- Masuk ke direktori klik-daily melalui terminal dengan perintah @cd klik-daily@.
+- Masuk ke direktori klik-daily melalui terminal dengan perintah cd klik-daily.
 - (Sesuai petunjuk installasi) Pada terminal, berikan perintah composer install. Ini perlu koneksi internet.
 - Composer akan menginstall dependency paket dari source code tersebut hingga selesai.
 - Jalankan perintah php artisan, untuk menguji apakah perintah artisan Laravel bekerja.
