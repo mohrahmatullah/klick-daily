@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Response;
 
 class Handler extends ExceptionHandler
 {
@@ -50,7 +51,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        return parent::render($request, $exception);
+        // return parent::render($request, $exception);
+        $res['status_code'] = 404;
+        $res['status_message'] = "Not Found";
+        return response($res);
     }
     // public function render($request, Exception $exception)
     // {
