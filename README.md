@@ -56,7 +56,9 @@ Silahkan Ujicoba test dengan aplikasi POSTMAN, berikut link:
 	value => application/json
 
 	- Body
-		Berikan Uji coba Test berikut : 
+	Berikan Uji coba Test berikut : 
+	
+	Ini untuk test multiple array 
 
 			[
 				{
@@ -70,6 +72,20 @@ Silahkan Ujicoba test dengan aplikasi POSTMAN, berikut link:
 				"adjustment": 6
 				}
 			]
+
+	Ini untuk test satu array
+
+			[
+				{
+				"location_id": 1,
+				"product": "Indomie Goreng",
+				"adjustment": -10
+				}
+			]
+
+	Catatan dari soal:	
+	Apabila product pada request tidak sama dengan product yang tersimpan di lokasi yang
+	dipilih maka proses akan gagal atau invalid product.
 
 3. GET LOGS 
 
